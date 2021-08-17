@@ -82,7 +82,7 @@
 
 	opp-1400000000 {
 		opp-hz = /bits/ 64 <1400000000>;
-		opp-microvolt = <1150000>;
+		opp-microvolt = <1175000>;
 		clock-latency-ns = <100000>;
 		opp-level = <2>;
 	};
