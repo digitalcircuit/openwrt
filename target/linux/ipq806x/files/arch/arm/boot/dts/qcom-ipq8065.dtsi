@@ -55,6 +55,10 @@
 	ports-implemented = <0x1>;
 };
 
+&smb208_s1a {
+	regulator-max-microvolt = <1175000>;
+};
+
 &smb208_s2a {
 	regulator-min-microvolt = <775000>;
 	regulator-max-microvolt = <1275000>;
