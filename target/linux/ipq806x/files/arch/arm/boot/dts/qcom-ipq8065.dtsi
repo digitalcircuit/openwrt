@@ -123,7 +123,11 @@
 	opp-800000000 {
 		opp-microvolt-speed0-pvs0-v0 = <1050000 997500 1102500>;
 		opp-microvolt-speed0-pvs1-v0 = <1025000 973750 1076250>;
-		opp-microvolt-speed0-pvs2-v0 = <1000000 950000 1050000>;
+		/*
+		 * PVS bin 2 requires slightly more voltage to avoid
+		 * crashes under cyclic loads.
+		 */
+		opp-microvolt-speed0-pvs2-v0 = <1020000 970000 1070000>;
 		opp-microvolt-speed0-pvs3-v0 = <975000 926250 1023750>;
 		opp-microvolt-speed0-pvs4-v0 = <950000 902500 997500>;
 		opp-microvolt-speed0-pvs5-v0 = <900000 855000 945000>;
@@ -133,7 +137,11 @@
 	opp-1000000000 {
 		opp-microvolt-speed0-pvs0-v0 = <1100000 1045000 1155000>;
 		opp-microvolt-speed0-pvs1-v0 = <1075000 1021250 1128750>;
-		opp-microvolt-speed0-pvs2-v0 = <1050000 997500 1102500>;
+		/*
+		 * PVS bin 2 requires slightly more voltage to avoid
+		 * crashes under cyclic loads.
+		 */
+		opp-microvolt-speed0-pvs2-v0 = <1070000 1017500 1122500>;
 		opp-microvolt-speed0-pvs3-v0 = <1025000 973750 1076250>;
 		opp-microvolt-speed0-pvs4-v0 = <1000000 950000 1050000>;
 		opp-microvolt-speed0-pvs5-v0 = <950000 902500 997500>;
@@ -143,7 +151,11 @@
 	opp-1400000000 {
 		opp-microvolt-speed0-pvs0-v0 = <1175000 1116250 1233750>;
 		opp-microvolt-speed0-pvs1-v0 = <1150000 1092500 1207500>;
-		opp-microvolt-speed0-pvs2-v0 = <1125000 1068750 1181250>;
+		/*
+		 * PVS bin 2 requires slightly more voltage to avoid
+		 * crashes under cyclic loads.
+		 */
+		opp-microvolt-speed0-pvs2-v0 = <1145000 1088750 1201250>;
 		opp-microvolt-speed0-pvs3-v0 = <1100000 1045000 1155000>;
 		opp-microvolt-speed0-pvs4-v0 = <1075000 1021250 1128750>;
 		opp-microvolt-speed0-pvs5-v0 = <1025000 973750 1076250>;
