@@ -155,7 +155,11 @@
 		opp-hz = /bits/ 64 <1725000000>;
 		opp-microvolt-speed0-pvs0-v0 = <1262500 1199375 1325625>;
 		opp-microvolt-speed0-pvs1-v0 = <1225000 1163750 1286250>;
-		opp-microvolt-speed0-pvs2-v0 = <1200000 1140000 1260000>;
+		/*
+		 * PVS bin 2 requires slightly more voltage to avoid
+		 * crashes under cyclic loads.
+		 */
+		opp-microvolt-speed0-pvs2-v0 = <1220000 1160000 1280000>;
 		opp-microvolt-speed0-pvs3-v0 = <1175000 1116250 1233750>;
 		opp-microvolt-speed0-pvs4-v0 = <1150000 1092500 1207500>;
 		opp-microvolt-speed0-pvs5-v0 = <1100000 1045000 1155000>;
