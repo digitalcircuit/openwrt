@@ -89,13 +89,6 @@
 };
 
 &opp_table0 {
-	/*
-	 * To improve stability under single-core
-	 * workloads, force both CPUs to share
-	 * DVFS scaling.
-	 */
-	opp-shared;
-
 	/* 
 	 * On ipq8065 1.2 ghz freq is not present
 	 * Remove it to make cpufreq work and not
