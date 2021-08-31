@@ -83,7 +83,7 @@
 	opp-1400000000 {
 		opp-hz = /bits/ 64 <1400000000>;
 		opp-microvolt = <1150000>;
-		clock-latency-ns = <1100000>;
+		clock-latency-ns = <100000>;
 		opp-level = <2>;
 	};
 };
@@ -108,12 +108,6 @@
 		opp-microvolt-speed0-pvs4-v0 = <875000 831250 918750>;
 		opp-microvolt-speed0-pvs5-v0 = <825000 783750 866250>;
 		opp-microvolt-speed0-pvs6-v0 = <775000 736250 813750>;
-		/*
-		 * Boost clock switching latency to avoid crashes
-		 *
-		 * FIXME: Find a less excessive latency!
-		 */
-		clock-latency-ns = <1100000>;
 	};
 
 	opp-600000000 {
@@ -124,12 +118,6 @@
 		opp-microvolt-speed0-pvs4-v0 = <900000 855000 945000>;
 		opp-microvolt-speed0-pvs5-v0 = <850000 807500 892500>;
 		opp-microvolt-speed0-pvs6-v0 = <800000 760000 840000>;
-		/*
-		 * Boost clock switching latency to avoid crashes
-		 *
-		 * FIXME: Find a less excessive latency!
-		 */
-		clock-latency-ns = <1100000>;
 	};
 
 	opp-800000000 {
@@ -140,12 +128,6 @@
 		opp-microvolt-speed0-pvs4-v0 = <950000 902500 997500>;
 		opp-microvolt-speed0-pvs5-v0 = <900000 855000 945000>;
 		opp-microvolt-speed0-pvs6-v0 = <850000 807500 892500>;
-		/*
-		 * Boost clock switching latency to avoid crashes
-		 *
-		 * FIXME: Find a less excessive latency!
-		 */
-		clock-latency-ns = <1100000>;
 	};
 
 	opp-1000000000 {
@@ -156,12 +138,6 @@
 		opp-microvolt-speed0-pvs4-v0 = <1000000 950000 1050000>;
 		opp-microvolt-speed0-pvs5-v0 = <950000 902500 997500>;
 		opp-microvolt-speed0-pvs6-v0 = <900000 855000 945000>;
-		/*
-		 * Boost clock switching latency to avoid crashes
-		 *
-		 * FIXME: Find a less excessive latency!
-		 */
-		clock-latency-ns = <1100000>;
 	};
 
 	opp-1400000000 {
@@ -172,12 +148,6 @@
 		opp-microvolt-speed0-pvs4-v0 = <1075000 1021250 1128750>;
 		opp-microvolt-speed0-pvs5-v0 = <1025000 973750 1076250>;
 		opp-microvolt-speed0-pvs6-v0 = <975000 926250 1023750>;
-		/*
-		 * Boost clock switching latency to avoid crashes
-		 *
-		 * FIXME: Find a less excessive latency!
-		 */
-		clock-latency-ns = <1100000>;
 		opp-level = <1>;
 	};
 
@@ -191,12 +161,7 @@
 		opp-microvolt-speed0-pvs5-v0 = <1100000 1045000 1155000>;
 		opp-microvolt-speed0-pvs6-v0 = <1050000 997500 1102500>;
 		opp-supported-hw = <0x1>;
-		/*
-		 * Boost clock switching latency to avoid crashes
-		 *
-		 * FIXME: Find a less excessive latency!
-		 */
-		clock-latency-ns = <1100000>;
+		clock-latency-ns = <100000>;
 		opp-level = <2>;
 	};
 };
