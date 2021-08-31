@@ -75,7 +75,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  ##################################################################################
 --- /dev/null
 +++ b/drivers/cpufreq/qcom-cpufreq-krait.c
-@@ -0,0 +1,603 @@
+@@ -0,0 +1,616 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -110,20 +110,31 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
 +	struct private_data *priv = policy->driver_data;
 +	unsigned long freq = policy->freq_table[index].frequency;
 +	unsigned long target_freq = freq * 1000;
++	unsigned long l2_target_freq;
 +	struct dev_pm_opp *opp;
 +	unsigned int level;
 +	int cpu, ret;
 +
++	/*
++	 * On ipq8065 (and possibly others), Krait CPU will crash when
++	 * toggling CPU cores independently between low and high
++	 * frequencies, e.g. 800 MHz and 1.75 GHz.  To work around this,
++	 * force both CPU cores to the same frequency, using whatever
++	 * target frequency is the highest.
++	 *
++	 * This is also used for managing L2 cache frequency.
++	 */
++
++	int policy_cpu = policy->cpu;
++
++	/* find the max freq across all core */
++	for_each_present_cpu(cpu)
++		if (cpu != policy_cpu)
++			target_freq = max(
++				target_freq,
++				(unsigned long)cpufreq_quick_get(cpu));
++
 +	if (l2_pdev) {
-+		int policy_cpu = policy->cpu;
-+
-+		/* find the max freq across all core */
-+		for_each_present_cpu(cpu)
-+			if (cpu != policy_cpu)
-+				target_freq = max(
-+					target_freq,
-+					(unsigned long)cpufreq_quick_get(cpu));
-+
 +		opp = dev_pm_opp_find_freq_exact(priv->cpu_dev, target_freq,
 +						 true);
 +		if (IS_ERR(opp)) {
@@ -152,19 +163,21 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
 +				"failed to find level OPP for %d\n", level);
 +			return PTR_ERR(opp);
 +		}
-+		target_freq = dev_pm_opp_get_freq(opp);
++		l2_target_freq = dev_pm_opp_get_freq(opp);
 +		dev_pm_opp_put(opp);
 +
-+		ret = dev_pm_opp_set_rate(&l2_pdev->dev, target_freq);
++		ret = dev_pm_opp_set_rate(&l2_pdev->dev, l2_target_freq);
 +		if (ret)
 +			return ret;
 +	}
 +
-+	ret = dev_pm_opp_set_rate(priv->cpu_dev, freq * 1000);
++	/* set to calculated target frequency across all cores */
++	ret = dev_pm_opp_set_rate(priv->cpu_dev, target_freq);
 +	if (ret)
 +		return ret;
 +
-+	arch_set_freq_scale(policy->related_cpus, freq,
++	/* convert target_freq back to cpuinfo units */
++	arch_set_freq_scale(policy->related_cpus, (target_freq / 1000),
 +			    policy->cpuinfo.max_freq);
 +
 +	return 0;
