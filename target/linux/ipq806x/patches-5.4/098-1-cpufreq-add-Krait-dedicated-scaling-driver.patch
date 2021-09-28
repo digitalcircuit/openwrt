@@ -75,7 +75,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  ##################################################################################
 --- /dev/null
 +++ b/drivers/cpufreq/qcom-cpufreq-krait.c
-@@ -0,0 +1,657 @@
+@@ -0,0 +1,603 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -108,9 +108,6 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
 +static int set_target(struct cpufreq_policy *policy, unsigned int index)
 +{
 +	struct private_data *priv = policy->driver_data;
-+	int policy_cpu = policy->cpu;
-+	/* get old freq in kHz to keep consistent units */
-+	unsigned long old_freq = cpufreq_quick_get(policy_cpu) / 1000;
 +	unsigned long freq = policy->freq_table[index].frequency;
 +	unsigned long target_freq = freq * 1000;
 +	struct dev_pm_opp *opp;
@@ -118,6 +115,8 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
 +	int cpu, ret;
 +
 +	if (l2_pdev) {
++		int policy_cpu = policy->cpu;
++
 +		/* find the max freq across all core */
 +		for_each_present_cpu(cpu)
 +			if (cpu != policy_cpu)
@@ -159,59 +158,6 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
 +		ret = dev_pm_opp_set_rate(&l2_pdev->dev, target_freq);
 +		if (ret)
 +			return ret;
-+	}
-+
-+	/*
-+	 * FIXME: Remove hardcoded values from 'qcom-ipq8065.dtsi',
-+	 * look up from DTS OPP tables
-+	 * Probably involves cpufreq_for_each_valid_entry_idx()
-+	 */
-+	if (freq > old_freq && (freq > 1000000)) {
-+		/*
-+		 * Scaling up beyond 1000000 kHz, first stop there
-+		 */
-+		if (freq > 1000000) {
-+			ret = dev_pm_opp_set_rate(priv->cpu_dev, 1000000 * 1000);
-+			if (ret)
-+				return ret;
-+		}
-+		/*
-+		 * Scaling up beyond 1400000 kHz, first stop there
-+		 */
-+		if (freq > 1400000) {
-+			ret = dev_pm_opp_set_rate(priv->cpu_dev, 1400000 * 1000);
-+			if (ret)
-+				return ret;
-+		}
-+		/*
-+		 * FIXME: Use DTS OPP tables to handle when 1725000 kHz isn't max
-+		 */
-+	}
-+	/*
-+	 * FIXME: Remove hardcoded values from 'qcom-ipq8065.dtsi',
-+	 * look up from DTS OPP tables
-+	 * Probably involves cpufreq_for_each_valid_entry_idx()
-+	 */
-+	if (freq < old_freq && (old_freq > 1000000)) {
-+		/*
-+		 * FIXME: Use DTS OPP tables to handle when 1725000 kHz isn't max
-+		 */
-+		/*
-+		 * Scaling down past 1400000 kHz, first stop there
-+		 */
-+		if (freq < 1400000) {
-+			ret = dev_pm_opp_set_rate(priv->cpu_dev, 1400000 * 1000);
-+			if (ret)
-+				return ret;
-+		}
-+		/*
-+		 * Scaling down past 1000000 kHz, first stop there
-+		 */
-+		if (freq < 1000000) {
-+			ret = dev_pm_opp_set_rate(priv->cpu_dev, 1000000 * 1000);
-+			if (ret)
-+				return ret;
-+		}
 +	}
 +
 +	ret = dev_pm_opp_set_rate(priv->cpu_dev, freq * 1000);
