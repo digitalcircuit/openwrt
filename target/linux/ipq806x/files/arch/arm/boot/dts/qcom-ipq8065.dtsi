@@ -80,11 +80,24 @@
 &opp_table_l2 {
 	/delete-node/opp-1200000000;
 
+	/*
+	 * To improve stability under single-core
+	 * workloads, force L2 cache to maximum
+	 * frequency at all times by removing lower
+	 * frequencies.
+	 */
+	/delete-node/opp-384000000;
+	/delete-node/opp-1000000000;
+
 	opp-1400000000 {
 		opp-hz = /bits/ 64 <1400000000>;
 		opp-microvolt = <1150000>;
 		clock-latency-ns = <100000>;
-		opp-level = <2>;
+		/*
+		 * As L2 cache scaling is disabled, treat
+		 * max frequency as level 1.
+		 */
+		opp-level = <1>;
 	};
 };
 
@@ -98,18 +111,23 @@
 	/delete-node/opp-1200000000;
 
 	/*
+	 * To improve latency and stability, remove
+	 * lowest frequency.
+	 */
+	/delete-node/opp-384000000;
+//	opp-384000000 {
+//		opp-microvolt-speed0-pvs0-v0 = <975000 926250 1023750>;
+//		opp-microvolt-speed0-pvs1-v0 = <950000 902500 997500>;
+//		opp-microvolt-speed0-pvs2-v0 = <925000 878750 971250>;
+//		opp-microvolt-speed0-pvs3-v0 = <900000 855000 945000>;
+//		opp-microvolt-speed0-pvs4-v0 = <875000 831250 918750>;
+//		opp-microvolt-speed0-pvs5-v0 = <825000 783750 866250>;
+//		opp-microvolt-speed0-pvs6-v0 = <775000 736250 813750>;
+//	};
+
+	/*
 	 * Voltage thresholds are <target min max>
 	 */
-	opp-384000000 {
-		opp-microvolt-speed0-pvs0-v0 = <975000 926250 1023750>;
-		opp-microvolt-speed0-pvs1-v0 = <950000 902500 997500>;
-		opp-microvolt-speed0-pvs2-v0 = <925000 878750 971250>;
-		opp-microvolt-speed0-pvs3-v0 = <900000 855000 945000>;
-		opp-microvolt-speed0-pvs4-v0 = <875000 831250 918750>;
-		opp-microvolt-speed0-pvs5-v0 = <825000 783750 866250>;
-		opp-microvolt-speed0-pvs6-v0 = <775000 736250 813750>;
-	};
-
 	opp-600000000 {
 		opp-microvolt-speed0-pvs0-v0 = <1000000 950000 1050000>;
 		opp-microvolt-speed0-pvs1-v0 = <975000 926250 1023750>;
@@ -118,6 +136,11 @@
 		opp-microvolt-speed0-pvs4-v0 = <900000 855000 945000>;
 		opp-microvolt-speed0-pvs5-v0 = <850000 807500 892500>;
 		opp-microvolt-speed0-pvs6-v0 = <800000 760000 840000>;
+		/*
+		 * As L2 cache scaling is disabled, treat
+		 * all frequencies as level 1.
+		 */
+		opp-level = <1>;
 	};
 
 	opp-800000000 {
@@ -128,6 +151,11 @@
 		opp-microvolt-speed0-pvs4-v0 = <950000 902500 997500>;
 		opp-microvolt-speed0-pvs5-v0 = <900000 855000 945000>;
 		opp-microvolt-speed0-pvs6-v0 = <850000 807500 892500>;
+		/*
+		 * As L2 cache scaling is disabled, treat
+		 * all frequencies as level 1.
+		 */
+		opp-level = <1>;
 	};
 
 	opp-1000000000 {
@@ -138,6 +166,11 @@
 		opp-microvolt-speed0-pvs4-v0 = <1000000 950000 1050000>;
 		opp-microvolt-speed0-pvs5-v0 = <950000 902500 997500>;
 		opp-microvolt-speed0-pvs6-v0 = <900000 855000 945000>;
+		/*
+		 * As L2 cache scaling is disabled, treat
+		 * all frequencies as level 1.
+		 */
+		opp-level = <1>;
 	};
 
 	opp-1400000000 {
@@ -162,6 +195,11 @@
 		opp-microvolt-speed0-pvs6-v0 = <1050000 997500 1102500>;
 		opp-supported-hw = <0x1>;
 		clock-latency-ns = <100000>;
-		opp-level = <2>;
+		//opp-level = <2>;
+		/*
+		 * As L2 cache scaling is disabled, treat
+		 * all frequencies as level 1.
+		 */
+		opp-level = <1>;
 	};
 };
