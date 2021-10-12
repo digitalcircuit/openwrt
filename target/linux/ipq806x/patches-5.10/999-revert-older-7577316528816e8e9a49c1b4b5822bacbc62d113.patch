@@ -1,0 +1,55 @@
+Revert 7577316528816e8e9a49c1b4b5822bacbc62d113
+
+https://github.com/torvalds/linux/commit/7577316528816e8e9a49c1b4b5822bacbc62d113
+
+FIXME: If this works, make a nicer patch file.
+
+--- b/drivers/mmc/host/mmci.c
++++ a/drivers/mmc/host/mmci.c
+@@ -22,7 +22,6 @@
+ #include <linux/mmc/pm.h>
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/card.h>
+-#include <linux/mmc/sd.h>
+ #include <linux/mmc/slot-gpio.h>
+ #include <linux/amba/bus.h>
+ #include <linux/clk.h>
+@@ -1218,9 +1217,6 @@
+ 		writel_relaxed(clks, host->base + MMCIDATATIMER);
+ 	}
+
+-	if (host->ops->pre_sig_volt_switch && cmd->opcode == SD_SWITCH_VOLTAGE)
+-		host->ops->pre_sig_volt_switch(host);
+-
+ 	if (/*interrupt*/0)
+ 		c |= MCI_CPSM_INTERRUPT;
+
+@@ -1834,7 +1830,6 @@
+
+ static int mmci_sig_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
+-	struct mmci_host *host = mmc_priv(mmc);
+ 	int ret = 0;
+
+ 	if (!IS_ERR(mmc->supply.vqmmc)) {
+@@ -1854,9 +1849,6 @@
+ 			break;
+ 		}
+
+-		if (!ret && host->ops && host->ops->post_sig_volt_switch)
+-			ret = host->ops->post_sig_volt_switch(host, ios);
+-
+ 		if (ret)
+ 			dev_warn(mmc_dev(mmc), "Voltage switch failed\n");
+ 	}
+--- b/drivers/mmc/host/mmci.h
++++ a/drivers/mmc/host/mmci.h
+@@ -377,8 +377,6 @@
+ 	void (*set_clkreg)(struct mmci_host *host, unsigned int desired);
+ 	void (*set_pwrreg)(struct mmci_host *host, unsigned int pwr);
+ 	bool (*busy_complete)(struct mmci_host *host, u32 status, u32 err_msk);
+-	void (*pre_sig_volt_switch)(struct mmci_host *host);
+-	int (*post_sig_volt_switch)(struct mmci_host *host, struct mmc_ios *ios);
+ };
+
+ struct mmci_host {
